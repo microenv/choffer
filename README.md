@@ -97,7 +97,7 @@ import LibTodos from "./some-lib-you-made";
 import { ObjectId } from "mongodb";
 
 const { ValidateRequest } = Choffer.Middlewares;
-const { UnknownError } = Choffer.Errors;
+const { UnknownError, NotFoundError } = Choffer.Errors;
 const { Joi } = Choffer.Joi;
 
 const dbName = "my-mongo";
