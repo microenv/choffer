@@ -24,11 +24,13 @@ yarn add @microenv/choffer
 Review your `package.json` file:
 
 ```json
-"main": "src/index.js",
-"scripts": [
-  "start": "choffer start",
-  "build": "choffer build"
-]
+{
+  "main": "src/index.js",
+  "scripts": {
+    "start": "choffer start",
+    "build": "choffer build"
+  }
+}
 ```
 
 - The "main" attribute is used in choffer as the entrypoint of your application.
