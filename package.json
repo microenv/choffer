@@ -12,11 +12,14 @@
   "repository": "https://github.com/microenv/choffer.git",
   "bugs": "https://github.com/microenv/choffer/issues",
   "files": [
-    "src/index.js"
+    "src/*"
   ],
-  "bin": {
-    "choffer": "node ./bin/choffer.js"
-  },
   "author": "Giovanne Afonso <giovanne.afonso@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "joi": "^17.3.0",
+    "lodash": "^4.17.20"
+  }
 }

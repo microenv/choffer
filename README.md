@@ -83,7 +83,7 @@ Choffer.StartRestGateway({
   middlewares: [
     Choffer.Middlewares.ValidateHeader({
       name: "client_id",
-      value: Choffer.Joi.string().alphanum().required(),
+      schema: Choffer.Joi.string().alphanum().required(),
     }),
   ],
 });
