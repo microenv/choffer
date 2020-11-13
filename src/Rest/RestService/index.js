@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const express = require("express");
 const defaultServiceConfig = require("./defaultServiceConfig");
 const defaultEndpointConfig = require("./defaultEndpointConfig");
 const ServerError = require("../../Errors/ServerError");
@@ -7,6 +8,11 @@ function RestService(config) {
   this.context = null;
   this.config = _.merge({}, defaultServiceConfig, config);
   this.endpoints = [];
+  this.router = express.Router();
+
+  this.config.middlewares.map((mid) => {
+    this.router.use(mid);
+  });
 }
 
 RestService.prototype.addEndpoint = function (endConfig) {
@@ -39,15 +45,23 @@ RestService.prototype._registerService = function (context) {
         throw new ServerError(`Unknown method: ${endp.method}`);
     }
 
-    const uri = `${this.config.prefix}${endp.uri}`;
+    const uri = `${endp.uri}`;
     const args = [uri];
     endp.middlewares.map((mid) => {
       args.push(mid);
     });
-    args.push(endp.handler);
-    this.context.app[method](...args);
+    args.push(async (req, res, next) => {
+      try {
+        await endp.handler(req, res, next);
+      } catch (error) {
+        next(error);
+      }
+    });
+    this.router[method](...args);
     console.log("[Choffer] Endpoint: ", `${method} ${uri}`);
   });
+
+  this.context.app.use(this.config.prefix, this.router);
 };
 
 module.exports = (config) => new RestService(config);
