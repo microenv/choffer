@@ -1,26 +1,71 @@
 {
   "name": "choffer",
-  "version": "1.0.0",
+  "author": "Giovanne Afonso <giovanneafonso@gmail.com>",
+  "version": "0.1.0",
   "description": "Create blazing fast REST APIs",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "keywords": [
     "rest",
     "api-gateway",
     "express"
   ],
-  "main": "src/index.js",
-  "homepage": "https://github.com/microenv/choffer",
-  "repository": "https://github.com/microenv/choffer.git",
-  "bugs": "https://github.com/microenv/choffer/issues",
   "files": [
-    "src/*"
+    "dist",
+    "src"
   ],
-  "author": "Giovanne Afonso <giovanne.afonso@gmail.com>",
-  "license": "MIT",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "module": "dist/choffer.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/choffer.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/choffer.esm.js",
+      "limit": "10 KB"
+    }
+  ],
   "dependencies": {
+    "@types/lodash": "^4.14.165",
     "axios": "^0.21.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "joi": "^17.3.0",
     "lodash": "^4.17.20"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^4.7.0",
+    "@types/cors": "^2.8.8",
+    "@types/express": "^4.17.9",
+    "husky": "^4.3.0",
+    "size-limit": "^4.7.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.0.3",
+    "typescript": "^4.0.5"
   }
 }
