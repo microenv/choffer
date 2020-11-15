@@ -1,9 +1,15 @@
 import ValidateHeader from "./ValidateHeader";
 import ValidateRequest from "./ValidateRequest";
-import DatabaseInsertOne from "./DatabaseInsertOne";
+import KnexInsertOne from "./KnexInsertOne";
+import KnexUpdate from "./KnexUpdate";
+import KnexDelete from "./KnexDelete";
+import KnexSearch from "./KnexSearch";
 
 export default {
   ValidateHeader,
   ValidateRequest,
-  DatabaseInsertOne,
+  KnexInsertOne,
+  KnexUpdate,
+  KnexDelete,
+  KnexSearch,
 };

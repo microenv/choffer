@@ -5,7 +5,7 @@ import Databases from '../../Databases';
 
 export type InsertedObject = any;
 
-export type DatabaseInsertConfig = {
+export type KnexInsertConfig = {
   connection?: string;
   table: string;
   primaryKey?: string;
@@ -14,7 +14,7 @@ export type DatabaseInsertConfig = {
   parseAfterInsert?: (result: InsertedObject) => any;
 }
 
-export default function DatabaseInsertOne(config: DatabaseInsertConfig) {
+export default function KnexInsertOne(config: KnexInsertConfig) {
   const runBefore = async (body: any) => {
     if (config.parseBeforeInsert) {
       return await config.parseBeforeInsert(JSON.parse(JSON.stringify(body)));
