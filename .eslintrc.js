@@ -11,5 +11,7 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    'array-callback-return': 'off',
   },
 };
