@@ -15,7 +15,7 @@ const users = [
     // You will need to prepend the image path with your baseUrl
     // if it is not '/', like: '/test-site/img/image.jpg'.
     image: "/img/undraw_open_source.svg",
-    infoLink: "https://www.facebook.com",
+    infoLink: "https://microenv.github.io/choffer",
     pinned: true,
   },
 ];
@@ -23,8 +23,8 @@ const users = [
 const siteConfig = {
   title: "Choffer.js",
   tagline: "Create blazing fast REST APIs",
-  url: "https://github.com/microenv/choffer",
-  baseUrl: "/choffer-website/", // Base URL for your project */
+  url: "https://microenv.github.io/choffer",
+  baseUrl: "/choffer/", // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
