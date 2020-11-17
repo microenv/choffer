@@ -1,103 +1,232 @@
-# TSDX User Guide
+# Choffer
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+Create powerful REST APIs with simplicity.
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+## Install Instructions
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
+> NOTE: This instructions uses yarn, but you can use npm if you want.
 
-## Commands
+Create a new project
 
-TSDX scaffolds your new library inside `/src`.
+```shell
+mkdir myproject
+cd myproject
 
-To run TSDX, use:
-
-```bash
-npm start # or yarn start
+yarn init
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
+Install the package
 
-To do a one-off build, use `npm run build` or `yarn build`.
-
-To run tests, use `npm test` or `yarn test`.
-
-## Configuration
-
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
+```shell
+yarn add @microenv/choffer
 ```
 
-### Rollup
+Review your `package.json` file:
 
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
-
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
+```json
+{
+  "main": "src/index.js",
+  "scripts": {
+    "start": "choffer start",
+    "build": "choffer build"
+  }
 }
 ```
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
+- The "main" attribute is used in choffer as the entrypoint of your application.
+- The start and build scripts use choffer for managing the application.
 
-## Module Formats
+## Getting Started
 
-CJS, ESModules, and UMD module formats are supported.
+In this example we gonna build a TODO App with a mongodb database. Because of this you need to install the mongodb driver `npm install --save mongodb`.
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
+For more information about databases, visit [@TODO - ConnectDatabase docs]().
 
-## Named Exports
+src/index.js
 
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
+```javascript
+import Choffer from 'choffer';
 
-## Including Styles
+Choffer.LoadEnv(['.env', '.env.local'], {
+  PORT: 3005,
+});
 
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
+Choffer.ConnectDatabases({
+  'my-mongo': {
+    driver: 'mongodb',
+    options: {
+      connectionString: 'mongodb://my-mongo',
+    },
+    errors: {
+      connection_failed: 'Could not connect to MongoDB!',
+    },
+  },
+  'my-maria': {
+    driver: 'mariadb',
+    options: {
+      host: 'localhost',
+      port: 3306,
+      user: 'admin',
+      password: 'admin',
+    },
+    errors: {
+      connection_failed: 'Não foi possível se conectar ao mariadb!',
+    },
+  },
+});
 
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
+Choffer.StartRestGateway({
+  config: {
+    port: process.env.PORT,
+  },
+  services: [require('./services/todos')],
+  middlewares: [
+    Choffer.Middlewares.ValidateHeader({
+      name: 'client_id',
+      schema: Choffer.Joi.string().alphanum().required(),
+    }),
+  ],
+});
+```
 
-## Publishing to NPM
+src/services/todos/index.js
 
-We recommend using [np](https://github.com/sindresorhus/np).
+```javascript
+import Choffer from '@microenv/choffer';
+import LibTodos from './some-lib-you-made';
+import { ObjectId } from 'mongodb';
+
+const { ValidateRequest } = Choffer.Middlewares;
+const { UnknownError, NotFoundError } = Choffer.Errors;
+const { Joi } = Choffer.Joi;
+
+const dbName = 'my-mongo';
+const dbCollection = 'todos';
+
+const service = Choffer.RestService({
+  name: 'todos',
+  description: 'CRUD service for todos',
+  prefix: '/v1/todos',
+  middlewares: [],
+});
+
+service.addEndpoint({
+  name: 'search',
+  description: 'List Todos',
+  method: 'GET',
+  uri: '/',
+  middlewares: [
+    ValidateRequest(
+      'query',
+      Joi.object({
+        title: Joi.string(),
+        done: Joi.boolean(),
+      })
+    ),
+  ],
+  async handler(req, res) {
+    const collection = Choffer.Database(dbName).collection(dbCollection);
+
+    const { title, done } = req.query;
+
+    // Query Filters
+    const where = {};
+    if (title) where.title = new RegExp(title, 'i');
+    if (done) where.done = done;
+
+    // Sort
+    const options = {
+      sort: { createdAt: 1 }, // 0:desc - 1:asc
+    };
+
+    const todos = await collection.find(where, options).toArray();
+    res.json(todos);
+  },
+});
+
+service.addEndpoint({
+  name: 'create',
+  description: 'Create a Todo',
+  method: 'POST',
+  uri: '/',
+  middlewares: [
+    ValidateRequest(
+      'body',
+      Joi.object({
+        title: Joi.string().min(3).max(30).required(),
+      })
+    ),
+  ],
+  async handler(req, res) {
+    const collection = Choffer.Database(dbName).collection(dbCollection);
+
+    const result = await collection.insertOne(req.body);
+
+    if (!result || !result.insertedId) {
+      throw new UnknownError(
+        'Could not insert todo because of a unknown error!'
+      );
+    }
+
+    res.status(201).json({
+      insertedId: result.insertedId,
+    });
+  },
+});
+
+service.addEndpoint({
+  name: 'update-done',
+  description: 'Update todo.done',
+  method: 'PUT',
+  uri: '/:id',
+  middlewares: [
+    ValidateRequest(
+      'params',
+      Joi.object({
+        done: Joi.boolean().required(),
+      })
+    ),
+  ],
+  async handler(req, res) {
+    const collection = Choffer.Database(dbName).collection(dbCollection);
+
+    const where = { _id: ObjectId(req.params.id) };
+    const updateDoc = { $set: { done: req.body.done } };
+    const result = await collection.updateOne(where, updateDoc);
+
+    if (!result || !result.modifiedCount) {
+      throw new UnknownError(
+        'Could not insert todo because of a unknown error!'
+      );
+    }
+
+    res.json({
+      modifiedCount: result.modifiedCount,
+    });
+  },
+});
+
+service.addEndpoint({
+  name: 'delete',
+  description: 'Delete a Todo',
+  method: 'DELETE',
+  uri: '/:id',
+  middlewares: [],
+  async handler(req, res) {
+    const collection = Choffer.Database(dbName).collection(dbCollection);
+
+    const where = { _id: ObjectId(req.params.id) };
+    const result = await collection.deleteOne(where);
+
+    if (!result || !result.deletedCount) {
+      throw new NotFoundError('Todo not found');
+    }
+
+    res.json({
+      deletedCount: result.deletedCount,
+    });
+  },
+});
+
+export default service;
+```
