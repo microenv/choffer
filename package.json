@@ -1,7 +1,7 @@
 {
-  "name": "choffer-website",
+  "name": "choffer",
   "version": "1.0.0",
-  "main": "index.js",
-  "author": "Giovanne",
+  "main": "index.html",
+  "author": "Giovanne Afonso <giovanneafonso@gmail.com>",
   "license": "MIT"
 }

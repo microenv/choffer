@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Your First REST API · Choffer.js</title>
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content="Docusaurus" />
+    <meta
+      name="description"
+      content="Before creating your Hello World API, please refer to install instructions."
+    />
+    <meta name="docsearch:language" content="en" />
+    <meta property="og:title" content="Your First REST API · Choffer.js" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/microenv/choffer/" />
+    <meta
+      property="og:description"
+      content="Before creating your Hello World API, please refer to install instructions."
+    />
+    <meta
+      property="og:image"
+      content="https://github.com/microenv/choffer/img/undraw_online.svg"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:image"
+      content="https://github.com/microenv/choffer/img/undraw_tweetstorm.svg"
+    />
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://buttons.github.io/buttons.js"
+    ></script>
+    <script src="/js/scrollSpy.js"></script>
+    <link rel="stylesheet" href="/css/main.css" />
+    <script src="/js/codetabs.js"></script>
+  </head>
+  <body class="sideNavVisible separateOnPageNav">
+    <div class="fixedHeaderContainer">
+      <div class="headerWrapper wrapper">
+        <header>
+          <a href="/"
+            ><img class="logo" src="/img/favicon.ico" alt="Choffer.js" />
+            <h2 class="headerTitleWithLogo">Choffer.js</h2></a
+          >
+          <div class="navigationWrapper navigationSlider">
+            <nav class="slidingNav">
+              <ul class="nav-site nav-site-internal">
+                <li class="siteNavGroupActive">
+                  <a href="/docs/introduction" target="_self">Docs</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </header>
+      </div>
+    </div>
+    <div class="navPusher">
+      <div class="docMainWrapper wrapper">
+        <div class="docsNavContainer" id="docsNav">
+          <nav class="toc">
+            <div class="toggleNav">
+              <section class="navWrapper wrapper">
+                <div class="navBreadcrumb wrapper">
+                  <div class="navToggle" id="navToggler">
+                    <div class="hamburger-menu">
+                      <div class="line1"></div>
+                      <div class="line2"></div>
+                      <div class="line3"></div>
+                    </div>
+                  </div>
+                  <h2><i>›</i><span>Getting Started</span></h2>
+                  <div class="tocToggler" id="tocToggler">
+                    <i class="icon-toc"></i>
+                  </div>
+                </div>
+                <div class="navGroups">
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Getting Started</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/docs/introduction"
+                          >Introduction</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/docs/install"
+                          >Install Instructions</a
+                        >
+                      </li>
+                      <li class="navListItem navListItemActive">
+                        <a class="navItem" href="/docs/hello-world"
+                          >Hello World</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Database</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/docs/database-mysql-mariadb"
+                          >MySQL / MariaDB</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/docs/database-mongodb"
+                          >MongoDB</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/docs/database-other"
+                          >Other Databases</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="navGroup">
+                    <h3 class="navGroupCategoryTitle">Middlewares</h3>
+                    <ul class="">
+                      <li class="navListItem">
+                        <a class="navItem" href="/docs/middlewares"
+                          >Middlewares</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a
+                          class="navItem"
+                          href="/docs/middleware-request-validation"
+                          >Validate Payload / Headers</a
+                        >
+                      </li>
+                      <li class="navListItem">
+                        <a class="navItem" href="/docs/middleware-database"
+                          >Database Helpers</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <script>
+              var coll = document.getElementsByClassName("collapsible");
+              var checkActiveCategory = true;
+              for (var i = 0; i < coll.length; i++) {
+                var links = coll[i].nextElementSibling.getElementsByTagName(
+                  "*"
+                );
+                if (checkActiveCategory) {
+                  for (var j = 0; j < links.length; j++) {
+                    if (links[j].classList.contains("navListItemActive")) {
+                      coll[i].nextElementSibling.classList.toggle("hide");
+                      coll[i].childNodes[1].classList.toggle("rotate");
+                      checkActiveCategory = false;
+                      break;
+                    }
+                  }
+                }
+
+                coll[i].addEventListener("click", function () {
+                  var arrow = this.childNodes[1];
+                  arrow.classList.toggle("rotate");
+                  var content = this.nextElementSibling;
+                  content.classList.toggle("hide");
+                });
+              }
+
+              document.addEventListener("DOMContentLoaded", function () {
+                createToggler("#navToggler", "#docsNav", "docsSliderActive");
+                createToggler("#tocToggler", "body", "tocActive");
+
+                var headings = document.querySelector(".toc-headings");
+                headings &&
+                  headings.addEventListener(
+                    "click",
+                    function (event) {
+                      var el = event.target;
+                      while (el !== headings) {
+                        if (el.tagName === "A") {
+                          document.body.classList.remove("tocActive");
+                          break;
+                        } else {
+                          el = el.parentNode;
+                        }
+                      }
+                    },
+                    false
+                  );
+
+                function createToggler(
+                  togglerSelector,
+                  targetSelector,
+                  className
+                ) {
+                  var toggler = document.querySelector(togglerSelector);
+                  var target = document.querySelector(targetSelector);
+
+                  if (!toggler) {
+                    return;
+                  }
+
+                  toggler.onclick = function (event) {
+                    event.preventDefault();
+
+                    target.classList.toggle(className);
+                  };
+                }
+              });
+            </script>
+          </nav>
+        </div>
+        <div class="container mainContainer docsContainer">
+          <div class="wrapper">
+            <div class="post">
+              <header class="postHeader">
+                <h1 id="__docusaurus" class="postHeaderTitle">
+                  Your First REST API
+                </h1>
+              </header>
+              <article>
+                <div>
+                  <span
+                    ><p>
+                      Before creating your Hello World API, please refer to
+                      install instructions.
+                    </p>
+                    <p><a href="install">See Install Instructions</a></p>
+                    <blockquote>
+                      <p>
+                        The source code from this Hello World tutorial is at
+                        GitHub.
+                      </p>
+                      <p><a href="">See this Hello World at Github</a></p>
+                    </blockquote>
+                    <h2>
+                      <a
+                        class="anchor"
+                        aria-hidden="true"
+                        id="create-the-api-gateway"
+                      ></a
+                      ><a
+                        href="#create-the-api-gateway"
+                        aria-hidden="true"
+                        class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >Create the API Gateway
+                    </h2>
+                    <p>
+                      Firstly we will create the main file of our application,
+                      the file specified in <code>npm start</code> script.
+                    </p>
+                    <p><strong>src/index.js</strong></p>
+                    <pre><code class="hljs css language-javascript"><span class="hljs-keyword">const</span> Choffer = <span class="hljs-built_in">require</span>(<span class="hljs-string">"choffer"</span>);
+<span class="hljs-keyword">const</span> HelloService = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./services/hello"</span>);
+<span class="hljs-keyword">const</span> TodosService = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./services/todos"</span>);
+
+Choffer.StartRestGateway({
+  <span class="hljs-attr">config</span>: {
+    <span class="hljs-attr">port</span>: process.env.PORT || <span class="hljs-number">8080</span>,
+  },
+  <span class="hljs-attr">services</span>: [TodosService],
+});
+</code></pre>
+                    <p>
+                      This will create an express app and start listening in the
+                      port you specified.
+                    </p>
+                    <h2>
+                      <a
+                        class="anchor"
+                        aria-hidden="true"
+                        id="create-the-hello-service"
+                      ></a
+                      ><a
+                        href="#create-the-hello-service"
+                        aria-hidden="true"
+                        class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >Create the Hello Service
+                    </h2>
+                    <p><strong>src/services/hello.js</strong></p>
+                    <pre><code class="hljs css language-javascript"><span class="hljs-keyword">const</span> Choffer = <span class="hljs-built_in">require</span>(<span class="hljs-string">"choffer"</span>);
+
+<span class="hljs-comment">// Create the service</span>
+<span class="hljs-keyword">const</span> service = Choffer.RestService({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">"hello"</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">"Hello World Service"</span>,
+  <span class="hljs-attr">prefix</span>: <span class="hljs-string">"/"</span>,
+});
+
+<span class="hljs-comment">// @GET /</span>
+service.addEndpoint({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">"home"</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">"Hello Endpoint"</span>,
+  <span class="hljs-attr">method</span>: <span class="hljs-string">"GET"</span>,
+  <span class="hljs-attr">uri</span>: <span class="hljs-string">"/:name?"</span>,
+  <span class="hljs-keyword">async</span> handler(req, res) {
+    res.json({
+      <span class="hljs-attr">hello</span>: req.params.name || <span class="hljs-string">"world"</span>,
+    });
+  },
+});
+</code></pre>
+                    <h2>
+                      <a
+                        class="anchor"
+                        aria-hidden="true"
+                        id="create-a-mocked-crud-service"
+                      ></a
+                      ><a
+                        href="#create-a-mocked-crud-service"
+                        aria-hidden="true"
+                        class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >Create a Mocked CRUD Service
+                    </h2>
+                    <p><strong>src/services/todos.js</strong></p>
+                    <pre><code class="hljs css language-javascript"><span class="hljs-keyword">const</span> Choffer = <span class="hljs-built_in">require</span>(<span class="hljs-string">"choffer"</span>);
+
+<span class="hljs-comment">// Mock data</span>
+<span class="hljs-keyword">const</span> genId = <span class="hljs-number">1</span>;
+
+<span class="hljs-keyword">const</span> todos = [
+  { <span class="hljs-attr">id</span>: genId++, <span class="hljs-attr">title</span>: <span class="hljs-string">"Install Choffer"</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">true</span> },
+  { <span class="hljs-attr">id</span>: genId++, <span class="hljs-attr">title</span>: <span class="hljs-string">"Create an API Gateway"</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">true</span> },
+  { <span class="hljs-attr">id</span>: genId++, <span class="hljs-attr">title</span>: <span class="hljs-string">"Create a Service"</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">false</span> },
+];
+
+<span class="hljs-comment">// Create the service</span>
+<span class="hljs-keyword">const</span> service = Choffer.RestService({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">"todos"</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">"Todos Service"</span>,
+  <span class="hljs-attr">prefix</span>: <span class="hljs-string">"/todos"</span>,
+});
+
+<span class="hljs-comment">// @GET /todos</span>
+service.addEndpoint({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">"list-todos"</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">"List Todos"</span>,
+  <span class="hljs-attr">method</span>: <span class="hljs-string">"GET"</span>,
+  <span class="hljs-attr">uri</span>: <span class="hljs-string">"/"</span>,
+  <span class="hljs-keyword">async</span> handler(req, res) {
+    res.json(todos);
+  },
+});
+
+<span class="hljs-comment">// @POST /todos</span>
+service.addEndpoint({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">"create-todo"</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">"Create a Todo"</span>,
+  <span class="hljs-attr">method</span>: <span class="hljs-string">"POST"</span>,
+  <span class="hljs-attr">uri</span>: <span class="hljs-string">"/"</span>,
+  <span class="hljs-attr">middlewares</span>: [
+    <span class="hljs-comment">// Ensure that body have only a title field</span>
+    <span class="hljs-comment">// Every other fields in req.body will be lost</span>
+    <span class="hljs-comment">// If the body has any validation errors,</span>
+    <span class="hljs-comment">// automatticaly throws an error and don't call handler</span>
+    Choffer.Rest.Middlewares.ValidateRequest(
+      <span class="hljs-string">"body"</span>,
+      Choffer.Joi.object({
+        <span class="hljs-attr">title</span>: Choffer.Joi.string().min(<span class="hljs-number">3</span>).max(<span class="hljs-number">30</span>).required(),
+      })
+    ),
+  ],
+  <span class="hljs-keyword">async</span> handler(req, res) {
+    <span class="hljs-comment">// req.body = { "title": "*" }</span>
+    todos.push({
+      <span class="hljs-attr">id</span>: genId++,
+      <span class="hljs-attr">title</span>: req.body.title,
+      <span class="hljs-attr">done</span>: <span class="hljs-literal">false</span>,
+    });
+  },
+});
+
+<span class="hljs-comment">// @PUT /todos/:todoId</span>
+service.addEndpoint({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">"update-todo"</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">"Update a Todo"</span>,
+  <span class="hljs-attr">method</span>: <span class="hljs-string">"PUT"</span>,
+  <span class="hljs-attr">uri</span>: <span class="hljs-string">"/:todoId"</span>,
+  <span class="hljs-attr">middlewares</span>: [
+    <span class="hljs-comment">// Validate request body</span>
+    <span class="hljs-comment">// Note that the none of the fields is .required()</span>
+    <span class="hljs-comment">// This means that if the req.body is empty, the validation</span>
+    <span class="hljs-comment">// will still pass</span>
+    Choffer.Rest.Middlewares.ValidateRequest(
+      <span class="hljs-string">"body"</span>,
+      Choffer.Joi.object({
+        <span class="hljs-attr">title</span>: Choffer.Joi.string().min(<span class="hljs-number">3</span>).max(<span class="hljs-number">30</span>),
+        <span class="hljs-attr">done</span>: Choffer.Joi.boolean(),
+      })
+    ),
+  ],
+  <span class="hljs-keyword">async</span> handler(req, res) {
+    <span class="hljs-keyword">const</span> todoIdx = todos.findIndex(<span class="hljs-function">(<span class="hljs-params">t</span>) =&gt;</span> <span class="hljs-built_in">String</span>(t.id) === req.params.todoId);
+
+    <span class="hljs-comment">// Throw a 400 Bad Request</span>
+    <span class="hljs-comment">// if todo is not found in database</span>
+    <span class="hljs-keyword">if</span> (todoIdx === <span class="hljs-number">-1</span>) Choffer.throw(<span class="hljs-number">400</span>, <span class="hljs-string">"Todo not found"</span>);
+
+    <span class="hljs-comment">// Update only the fields that are not undefined</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> req.body.title !== <span class="hljs-string">"undefined"</span>) todo.title = req.body.title;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> req.body.done !== <span class="hljs-string">"undefined"</span>) todo.done = req.body.done;
+
+    res.json(todo);
+  },
+});
+
+<span class="hljs-comment">// @DELETE /todos/:todoId</span>
+service.addEndpoint({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">"delete-todo"</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">"Delete a Todo"</span>,
+  <span class="hljs-attr">method</span>: <span class="hljs-string">"DELETE"</span>,
+  <span class="hljs-attr">uri</span>: <span class="hljs-string">"/:todoId"</span>,
+  <span class="hljs-keyword">async</span> handler(req, res) {
+    <span class="hljs-keyword">const</span> todoIdx = todos.findIndex(<span class="hljs-function">(<span class="hljs-params">t</span>) =&gt;</span> <span class="hljs-built_in">String</span>(t.id) === req.params.todoId);
+    <span class="hljs-keyword">if</span> (todoIdx === <span class="hljs-number">-1</span>) Choffer.throw(<span class="hljs-number">404</span>, <span class="hljs-string">"Todo not found"</span>);
+    todos.splice(todoIdx, <span class="hljs-number">1</span>);
+    res.json({ <span class="hljs-attr">success</span>: <span class="hljs-literal">true</span> });
+  },
+});
+
+<span class="hljs-built_in">module</span>.exports = service;
+</code></pre>
+                    <h2>
+                      <a
+                        class="anchor"
+                        aria-hidden="true"
+                        id="run-your-project"
+                      ></a
+                      ><a
+                        href="#run-your-project"
+                        aria-hidden="true"
+                        class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >Run Your Project
+                    </h2>
+                    <p>
+                      Finally, start your application. In case you followed our
+                      <a href="./install">Install Instructions</a> you should
+                      have a start script
+                    </p>
+                    <pre><code class="hljs css language-shell">yarn start
+</code></pre>
+                    <h2>
+                      <a
+                        class="anchor"
+                        aria-hidden="true"
+                        id="open-in-the-browser"
+                      ></a
+                      ><a
+                        href="#open-in-the-browser"
+                        aria-hidden="true"
+                        class="hash-link"
+                        ><svg
+                          class="hash-link-icon"
+                          aria-hidden="true"
+                          height="16"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+                          ></path></svg></a
+                      >Open in the Browser
+                    </h2>
+                    <p>
+                      Visit
+                      <a href="http://localhost:8080/todos" target="_blank"
+                        >http://localhost:8080/todos</a
+                      >
+                    </p>
+                  </span>
+                </div>
+              </article>
+            </div>
+            <div class="docLastUpdate"><em>Last updated on 11/16/2020</em></div>
+            <div class="docs-prevnext">
+              <a class="docs-prev button" href="/docs/install"
+                ><span class="arrow-prev">← </span
+                ><span>Install Instructions</span></a
+              ><a class="docs-next button" href="/docs/database-mysql-mariadb"
+                ><span class="function-name-prevnext">MySQL / MariaDB</span
+                ><span class="arrow-next"> →</span></a
+              >
+            </div>
+          </div>
+        </div>
+        <nav class="onPageNav">
+          <ul class="toc-headings">
+            <li>
+              <a href="#create-the-api-gateway">Create the API Gateway</a>
+            </li>
+            <li>
+              <a href="#create-the-hello-service">Create the Hello Service</a>
+            </li>
+            <li>
+              <a href="#create-a-mocked-crud-service"
+                >Create a Mocked CRUD Service</a
+              >
+            </li>
+            <li><a href="#run-your-project">Run Your Project</a></li>
+            <li><a href="#open-in-the-browser">Open in the Browser</a></li>
+          </ul>
+        </nav>
+      </div>
+      <footer class="nav-footer" id="footer">
+        <section class="sitemap">
+          <a href="/" class="nav-home"
+            ><img
+              src="/img/favicon.ico"
+              alt="Choffer.js"
+              width="66"
+              height="58"
+          /></a>
+          <div>
+            <h5>Docs</h5>
+            <a href="/docs/introduction">Getting Started</a>
+          </div>
+          <div>
+            <h5>Community</h5>
+            <a
+              href="https://stackoverflow.com/questions/tagged/choffer"
+              target="_blank"
+              rel="noreferrer noopener"
+              >Stack Overflow</a
+            >
+          </div>
+          <div>
+            <h5>More</h5>
+            <a href="/blog">Blog</a
+            ><a href="https://github.com/microenv/choffer" target="_blank"
+              >GitHub</a
+            ><a
+              class="github-button"
+              href="https://github.com/microenv/choffer"
+              data-icon="octicon-star"
+              data-count-href="/microenv"
+              data-show-count="true"
+              data-count-aria-label="# Choffer on GitHub"
+              aria-label="Star this project on GitHub"
+              >Star</a
+            >
+          </div>
+        </section>
+        <section class="copyright">Copyright © 2020 MicroEnv</section>
+      </footer>
+    </div>
+  </body>
+</html>

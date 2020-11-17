@@ -1,2 +1,3 @@
-# choffer-website
-Source code of Choffer docs
+# Choffer Docs
+
+Read choffer docs.
