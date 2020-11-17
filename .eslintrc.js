@@ -10,6 +10,6 @@ module.exports = {
     },
   },
   rules: {
-    'prettier/prettier': 'warning',
+    'prettier/prettier': 'off',
   },
 };
