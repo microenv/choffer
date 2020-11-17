@@ -1,0 +1,18 @@
+{
+  "docs": {
+    "Getting Started": ["introduction", "install", "hello-world"],
+    "Database": [
+      "database-mysql-mariadb",
+      "database-mongodb",
+      "database-other"
+    ],
+    "Middlewares": [
+      "middlewares",
+      "middleware-request-validation",
+      "middleware-database"
+    ]
+  },
+  "__docs-other": {
+    "First Category": ["doc4", "doc5"]
+  }
+}
