@@ -1,5 +1,5 @@
 import JoiValidationError from '../../Errors/JoiValidationError';
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
 
 type ValidateHeaderProps = {

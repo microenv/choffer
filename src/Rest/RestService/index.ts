@@ -1,7 +1,8 @@
 import * as _ from "lodash";
-import express, { Request, Response, NextFunction } from "express";
 import ServerError from "../../Errors/ServerError";
 import { RestMiddleware, RestServiceBase, RestServiceContext } from "..";
+
+const express = require('express');
 
 export type RestServiceConfig = {
   name: string;
@@ -86,7 +87,7 @@ class RestService implements RestServiceBase {
       endp.middlewares.map((mid: RestMiddleware) => {
         args.push(mid as any);
       });
-      args.push(async (req: Request, res: Response, next: NextFunction) => {
+      args.push(async (req: any, res: any, next: Function) => {
         try {
           if (endp.handler) {
             const handler = endp.handler as RestMiddleware;

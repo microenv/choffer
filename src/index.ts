@@ -1,4 +1,6 @@
-import Joi from "joi";
+#!/usr/bin/env ts-node-script
+
+import * as _Joi from 'joi';
 import Axios from "axios";
 import Errors from "./Errors";
 import * as Rest from "./Rest";
@@ -7,7 +9,7 @@ import RestService from "./Rest/RestService";
 import HttpProxyService from "./Rest/HttpProxyService";
 import Databases from './Databases';
 
-export { default as Joi } from 'joi';
+export const Joi = _Joi;
 export { default as Axios } from 'axios';
 export { default as Errors } from './Errors';
 export * as Rest from './Rest';

@@ -1,5 +1,5 @@
 import JoiValidationError from '../../Errors/JoiValidationError';
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
 import Databases from '../../Databases';
 
@@ -10,22 +10,22 @@ export type KnexInsertConfig = {
   table: string;
   primaryKey?: string;
   schema: Joi.Schema;
-  parseBeforeInsert?: (obj: any) => any;
-  parseAfterInsert?: (result: InsertedObject) => any;
+  parseBeforeInsert?: (body: any, req: Request) => Promise<any>;
+  parseAfterInsert?: (result: InsertedObject, req: Request) => Promise<any>;
 }
 
 export default function KnexInsertOne(config: KnexInsertConfig) {
-  const runBefore = async (body: any) => {
+  const runBefore = async (body: any, req: Request) => {
     if (config.parseBeforeInsert) {
-      return await config.parseBeforeInsert(JSON.parse(JSON.stringify(body)));
+      return await config.parseBeforeInsert(JSON.parse(JSON.stringify(body)), req);
     }
 
     return body;
   }
 
-  const runAfter = async (result: InsertedObject) => {
+  const runAfter = async (result: InsertedObject, req: Request) => {
     if (config.parseAfterInsert) {
-      return await config.parseAfterInsert(result);
+      return await config.parseAfterInsert(result, req);
     }
 
     return result;
@@ -42,7 +42,7 @@ export default function KnexInsertOne(config: KnexInsertConfig) {
         );
       }
 
-      const insertData = await runBefore(resValidate.value);
+      const insertData = await runBefore(resValidate.value, req);
 
       const db = Databases.Database(config.connection);
 
@@ -52,7 +52,7 @@ export default function KnexInsertOne(config: KnexInsertConfig) {
 
       const qryResult = await db(config.table).where({ [primaryKey]: insResult[0] }).first();
 
-      const finalResult = await runAfter(qryResult);
+      const finalResult = await runAfter(qryResult, req);
 
       res.json(finalResult);
     } catch (error) {

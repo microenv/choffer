@@ -1,8 +1,9 @@
 import * as _ from 'lodash';
-import express, { Express } from 'express';
-import cors from 'cors';
 import ServerError from '../../Errors/ServerError';
 import { RestMiddleware, RestServiceBase, RestServiceContext } from '..';
+
+const express = require('express');
+const cors = require('cors');
 
 export type RestGatewayConfig = {
   config: {
@@ -27,7 +28,7 @@ let alreadyStarted: boolean = false;
 
 class StartRestGateway implements RestServiceContext {
   config: RestGatewayConfig;
-  app: Express = express();
+  app = express();
 
   constructor(gatewayConfig: Partial<RestGatewayConfig>) {
     if (alreadyStarted) {

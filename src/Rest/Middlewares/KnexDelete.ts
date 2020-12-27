@@ -10,20 +10,20 @@ export type KnexDeleteConfig = {
   connection?: string;
   table: string;
   where: (req: Request, builder: any) => void;
-  onBeforeDelete?: () => any;
-  onAfterDelete?: (result: DeletedResponse) => any;
+  onBeforeDelete?: (req: Request) => any;
+  onAfterDelete?: (result: DeletedResponse, req: Request) => any;
 }
 
 export default function KnexDelete(config: KnexDeleteConfig) {
-  const runBefore = async () => {
+  const runBefore = async (req: Request) => {
     if (config.onBeforeDelete) {
-      return await config.onBeforeDelete();
+      return await config.onBeforeDelete(req);
     }
   }
 
-  const runAfter = async (result: DeletedResponse) => {
+  const runAfter = async (result: DeletedResponse, req: Request) => {
     if (config.onAfterDelete) {
-      return await config.onAfterDelete(result);
+      return await config.onAfterDelete(result, req);
     }
 
     return result;
@@ -31,7 +31,7 @@ export default function KnexDelete(config: KnexDeleteConfig) {
 
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await runBefore();
+      await runBefore(req);
 
       const db = Databases.Database(config.connection);
 
@@ -43,7 +43,7 @@ export default function KnexDelete(config: KnexDeleteConfig) {
         .where(whereCallback)
         .del();
 
-      const finalResult = await runAfter({ success: true, deletedCount: delResult });
+      const finalResult = await runAfter({ success: true, deletedCount: delResult }, req);
 
       res.json(finalResult);
     } catch (error) {

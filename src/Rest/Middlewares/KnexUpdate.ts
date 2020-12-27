@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import JoiValidationError from '../../Errors/JoiValidationError';
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
 import Databases from '../../Databases';
 import BadRequestError from '../../Errors/BadRequestError';

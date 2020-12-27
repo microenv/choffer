@@ -1,5 +1,5 @@
 import CustomError from './CustomError';
-import Joi from 'joi';
+import * as Joi from 'joi';
 
 export default class JoiValidationError extends CustomError {
   constructor(joiValidateResponse: Joi.ValidationResult | string, errorCode: string = '', _debug?: any) {
